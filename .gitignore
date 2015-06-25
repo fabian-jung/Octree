@@ -26,3 +26,8 @@
 *.exe
 *.out
 *.app
+
+# Binaries and Objects
+
+bin/*
+build/*

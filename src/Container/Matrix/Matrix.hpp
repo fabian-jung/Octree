@@ -156,7 +156,7 @@ public:
     */
 
 	void broadcast() {
-		boost::mpi::broadcast(world, *this, root);
+		boost::mpi::broadcast(world, data, dimx_*dimy_, root);
 	}
 
 };

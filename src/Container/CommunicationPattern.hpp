@@ -123,17 +123,17 @@ public:
 		//List of all requests
 		//auto requestQueue = new boost::mpi::request[sendBuffer.size() + receiveBuffer.size()];
 		std::vector<boost::mpi::request> requestQueue;
-	//	unsigned int pos = 0;
+		//unsigned int pos = 0;
 		//All send operations
 		for(auto i : sendBuffer) {
 			//std::cout << "rank " << world.rank() << " sends to " << i.first << " tag " << world.rank() << " some data with size " << i.second.size() << std::endl;
-			requestQueue.push_back(world.isend(i.first, world.rank(), i.second));
+			requestQueue.push_back(world.isend(i.first, world.rank(), &i.second[0], i.second.size()));
 		}
 		
 		//All receive operations
 		for(auto i : receiveBuffer) {
-			//std::cout << "rank " << world.rank() << " receives from " << i.first << " tag " << i.first << " some data" << std::endl;
-			requestQueue.push_back(world.irecv(i.first, i.first, receiveBuffer[i.first]));
+			//std::cout << "rank " << world.rank() << " receives from " << i.first << " tag " << i.first << " some data with size " << receiveList[i.first].size() << std::endl;
+			requestQueue.push_back(world.irecv(i.first, i.first, &receiveBuffer[i.first][0], receiveList[i.first].size()));
 		}
 
 		//Synchronize

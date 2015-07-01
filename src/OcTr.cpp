@@ -18,32 +18,41 @@
 namespace mpi = boost::mpi;
 
 #ifndef CONTAINER
-	#define CONTAINER Octree
+	#warning "No Container specified. Using standart (CMatrix)"
+	#define CONTAINER CMatrix
 #endif
 
 #ifndef MODEL
+	#warning "No Model specified. Using standart (HeatEquation)"
 	#define MODEL HeatEquation
 #endif
 
 #ifndef CURVE
+	#warning "No Curve specified. Using standart (LinearCurve)"
 	#define CURVE LinearCurve
 #endif
 
 #ifndef DEPTH
+	#warning "No Depth specified using standart (3)"
 	#define DEPTH 3
 #endif
 
-#if CONTAINER == Octree
-	#ifndef TOPOLOGY
-		#define TOPOLOGY Equidistant
-	#endif
-	typedef ConfigType<OctreeHelper<TOPOLOGY<DEPTH> >::Octree, MODEL, CURVE > Config;
-#else
-#if CONTAINER == Matrix 
-	const int dim = 1 << DEPTH;
-	typedef ConfigType<MatrixHelper<dim, dim>::Matrix , MODEL, CURVE > Config;
+#ifndef TOPOLOGY
+        #warning "No topology specified. Using standart (Equidistant)"
+        #define TOPOLOGY Equidistant
 #endif
-#endif
+
+struct COctree {
+	template<class T> using Type = Octree<T, TOPOLOGY<DEPTH> >;
+};
+
+struct CMatrix {
+	static const unsigned int dim = 1 << DEPTH;
+	template<class T> using Type = Matrix<T, dim, dim>;
+};
+
+typedef ConfigType< CONTAINER::Type, MODEL, CURVE > Config;
+
 
 int randomGenerator() {
 	return std::rand()%2;
@@ -106,7 +115,7 @@ int main(int argc, char** argv) {
 	auto mid = std::chrono::steady_clock::now();
 
 	/* Simulation loop */
-	for(unsigned int i = 0; i < 1000; i++) {
+	for(unsigned int i = 0; i < 100; i++) {
 		//Calc new Values
 		for(auto it = Config::Curve(mat[active], beginOffset(mat[active], world)); it != Config::Curve(mat[active], endOffset(mat[active], world)); ++it) {
 			//std::cout << (*it).getKey().first << ", " << (*it).getKey().second << " = " << mat[active][(*it).getKey()] << std::endl;
@@ -134,6 +143,8 @@ int main(int argc, char** argv) {
 	
 	if(world.rank() == root) {
 		std::string logFile = argv[0];
+		logFile += "_";
+		logFile += std::to_string(world.size());
 		logFile += ".txt";
 		
 		std::ofstream Log(logFile.c_str());

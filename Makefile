@@ -5,13 +5,14 @@ BIN = ./bin
 PROGRAM_NAME = OcTr
 DEBUGGER = gdb
 ACCELERATOR = mpirun
-PROCESSES = 8
+PROCESSES = 2
 ACCELERATOR_OPTIONS = -np $(PROCESSES)
 
 # Build Flags and Libs
 LIBS = -I/usr/include/boost \
 	   -I/usr/include/boost/mpi \
 	   -L/usr/lib \
+	   -L/opt/bullxde/utils/boost/lib/\
 	   -lboost_mpi \
 	   -lboost_serialization
 

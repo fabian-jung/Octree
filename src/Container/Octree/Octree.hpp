@@ -130,15 +130,17 @@ public:
    	}
     
     void broadcast() {
-    	std::vector<DataType> buffer;
-    	if(world.rank() == root) {
+    	std::vector<DataType> buffer(rootNode.getSize());
+    	unsigned int pos = 0;
+	if(world.rank() == root) {
 			for(auto it = begin(); it != end(); it++) {
-				buffer.push_back(*it);
+				buffer[pos] = *it;
+				pos++;
 			}     	
     	}
-    	boost::mpi::broadcast(world, buffer, root);
+    	boost::mpi::broadcast(world, &buffer[0], buffer.size(), root);
     	if(world.rank() != root) {
-    		int pos = 0;
+    		pos = 0;
 			for(auto it = begin(); it != end(); it++) {
 				*it = buffer[pos];
 				pos++;

@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
 #include <cstdlib>
 #include <boost/mpi.hpp>
 #include <chrono>
@@ -13,32 +14,32 @@
 #include "Model/GameOfLife.hpp"
 #include "Curves/LinearCurve.hpp"
 #include "Curves/ZCurve.hpp"
-
+#include "Curves/HilbertCurve.hpp"
 
 namespace mpi = boost::mpi;
 
 #ifndef CONTAINER
-	#warning "No Container specified. Using standart (CMatrix)"
-	#define CONTAINER CMatrix
+	#warning "No Container specified. Using default (COctree)"
+	#define CONTAINER COctree
 #endif
 
 #ifndef MODEL
-	#warning "No Model specified. Using standart (HeatEquation)"
+	#warning "No Model specified. Using default (HeatEquation)"
 	#define MODEL HeatEquation
 #endif
 
 #ifndef CURVE
-	#warning "No Curve specified. Using standart (LinearCurve)"
-	#define CURVE LinearCurve
+	#warning "No Curve specified. Using default (HilbertCurve)"
+	#define CURVE HilbertCurve
 #endif
 
 #ifndef DEPTH
-	#warning "No Depth specified using standart (3)"
+	#warning "No Depth specified using default (3)"
 	#define DEPTH 3
 #endif
 
 #ifndef TOPOLOGY
-        #warning "No topology specified. Using standart (Equidistant)"
+        #warning "No topology specified. Using default (Equidistant)"
         #define TOPOLOGY Equidistant
 #endif
 
@@ -62,7 +63,7 @@ int main(int argc, char** argv) {
 	auto start = std::chrono::steady_clock::now();
 
 	std::srand(1);
-	std::cout << std::fixed;
+	std::cout << std::fixed <<  std::setprecision(1);
 	mpi::environment env;
 	mpi::communicator world;
 	const int root = 0;
@@ -79,23 +80,23 @@ int main(int argc, char** argv) {
 	/*
 		std::fill(mat[active].begin(), mat[active].end(), 0);
 		std::fill(mat[active].begin(), mat[active].end(), 100);
-		std::generate(mat[active].begin(), mat[active].end(), randomGenerator);
 	*/
-		mat[active][Config::MatType::Key(3,4)] = 100;
-		
-	/*
+		std::generate(mat[active].begin(), mat[active].end(), randomGenerator);
+	//	mat[active][Config::MatType::Key(3,4)] = 100;
+	/*	
 		double pos = 0;
 		for(auto it = Config::Curve(mat[active], 0); it != Config::Curve(mat[active], mat[active].getSize()); ++it) {
 			(*it).center() = pos;
+			std::cout << pos << "(" << (*it).getKey().first << ", "<< (*it).getKey().second << ")" << std::endl;
 			++pos;
 		}
 	*/
-	/*
+	
 		std::cout << "Input values:" << std::endl;
 		std::cout << mat[active] << std::endl;
-	*/
+	
 	}
-
+	
 	Config::CommunicationPatternType commPattern(world, root);
 	
 	//mat[active].broadcast();
@@ -142,6 +143,10 @@ int main(int argc, char** argv) {
 	auto diff3 = end - start;
 	
 	if(world.rank() == root) {
+	
+		std::cout << "output values:" << std::endl;
+		std::cout << mat[active] << std::endl;
+		
 		std::string logFile = argv[0];
 		logFile += "_";
 		logFile += std::to_string(world.size());

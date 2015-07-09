@@ -128,7 +128,7 @@ public:
 		return height;
 	}
 	
-	Key getNthKey(unsigned int n) {
+	Key getNthKey(unsigned int n) const {
 		if(leaf) return Key(0,0);
 		unsigned int i;
 		for(i = 0; i < 4; i++) {
@@ -174,6 +174,20 @@ public:
 				return (children[3]->getNode(key));
 			}
 		}
+	}
+	
+	Key getKey(const unsigned int maxDepth) const {
+		if(parent == NULL) return Key(0,0);
+		Key res = parent->getKey(maxDepth);
+		int childId = std::find(parent->children, parent->children+4, this) - parent->children;
+		if(childId >= 2) {
+			res.second +=  1 << (maxDepth - height - 1);
+			childId -= 2;
+		}
+		if(childId == 1) {
+			res.first +=  1 << (maxDepth - height - 1);
+		}
+		return res;
 	}
 
 };

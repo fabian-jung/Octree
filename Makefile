@@ -5,7 +5,7 @@ BIN = ./bin
 PROGRAM_NAME = OcTr
 DEBUGGER = gdb
 ACCELERATOR = mpirun
-PROCESSES = 1
+PROCESSES = 3
 ACCELERATOR_OPTIONS = -np $(PROCESSES)
 
 # Build Flags and Libs

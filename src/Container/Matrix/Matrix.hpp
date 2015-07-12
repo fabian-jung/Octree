@@ -79,7 +79,7 @@ public:
 		return iterator(*this, dimx_*dimy_);
 	}
 	
-	const unsigned int getSize() const {
+	unsigned int getSize() const {
 		return dimx_*dimy_;
 	}
 	
@@ -163,7 +163,7 @@ public:
 
 template <unsigned int dimx, unsigned int dimy>
 struct MatrixHelper {
-	template<class T> using Matrix = Matrix<T, dimx, dimy>;
+//	template<class T> using Matrix = Matrix<T, dimx, dimy>;
 };
 
 

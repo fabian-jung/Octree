@@ -74,7 +74,7 @@ public:
 		return iterator(*this, rootNode.getSize());
 	}
 	
-	const unsigned int getSize() const {
+	unsigned int getSize() const {
 		return rootNode.getSize();
 	}
 	
@@ -152,7 +152,7 @@ public:
 
 template <class Topology>
 struct OctreeHelper {
-	template<class T> using Octree = Octree<T, Topology>;
+	//template<class T> using Octree = Octree<T, Topology>;
 };
 
 

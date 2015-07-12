@@ -60,7 +60,7 @@ int randomGenerator() {
 }
 
 int main(int argc, char** argv) {
-	auto start = std::chrono::steady_clock::now();
+	auto start = std::chrono::monotonic_clock::now();
 
 	std::srand(1);
 	std::cout << std::fixed <<  std::setprecision(1);
@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
 	const int root = 0;
 	
     // Print off a hello world message
-    std::cout << "Hello from rank " << world.rank() << " out of " << world.size() << std::endl;
+    //std::cout << "Hello from rank " << world.rank() << " out of " << world.size() << std::endl;
 	world.barrier();
 		
 	/* Set Up */
@@ -92,8 +92,8 @@ int main(int argc, char** argv) {
 		}
 	*/
 	
-		std::cout << "Input values:" << std::endl;
-		std::cout << mat[active] << std::endl;
+	//	std::cout << "Input values:" << std::endl;
+	//	std::cout << mat[active] << std::endl;
 	
 	}
 	
@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
 	}
 	*/
 
-	auto mid = std::chrono::steady_clock::now();
+	auto mid = std::chrono::monotonic_clock::now();
 
 	/* Simulation loop */
 	for(unsigned int i = 0; i < 100; i++) {
@@ -137,19 +137,19 @@ int main(int argc, char** argv) {
 
 	mat[active].gather<Config::Curve>();
 
-	auto end = std::chrono::steady_clock::now();
+	auto end = std::chrono::monotonic_clock::now();
 	auto diff1 = mid - start;
 	auto diff2 = end - mid;
 	auto diff3 = end - start;
 	
 	if(world.rank() == root) {
 	
-		std::cout << "output values:" << std::endl;
-		std::cout << mat[active] << std::endl;
+	//	std::cout << "output values:" << std::endl;
+	//	std::cout << mat[active] << std::endl;
 		
 		std::string logFile = argv[0];
 		logFile += "_";
-		logFile += std::to_string(world.size());
+		logFile += std::to_string(static_cast<long long>(world.size()));
 		logFile += ".txt";
 		
 		std::ofstream Log(logFile.c_str());
@@ -162,8 +162,8 @@ int main(int argc, char** argv) {
 	
 	/*	
 	if(world.rank() == root) {
-		std::cout << "Result:" << std::endl;
-		std::cout << mat[active] << std::endl;
+	//	std::cout << "Result:" << std::endl;
+	//	std::cout << mat[active] << std::endl;
 	}
 	*/
 	

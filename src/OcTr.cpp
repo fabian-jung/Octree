@@ -35,7 +35,7 @@ namespace mpi = boost::mpi;
 
 #ifndef DEPTH
 	#warning "No Depth specified using default (3)"
-	#define DEPTH 12
+	#define DEPTH 13
 #endif
 
 #ifndef TOPOLOGY
@@ -71,7 +71,6 @@ int main(int argc, char** argv) {
 	mpi::environment env;
 	mpi::communicator world;
 	const int root = 0;
-    std::cout << "Init" << std::endl;	
     // Print off a hello world message
     //std::cout << "Hello from rank " << world.rank() << " out of " << world.size() << std::endl;
 	world.barrier();
@@ -79,7 +78,7 @@ int main(int argc, char** argv) {
 	/* Set Up */
 	Config::MatType mat[2] = {Config::MatType(world, root), Config::MatType(world, root)};
 	unsigned int active = 0;
-	
+		
 	if(world.rank() == root) {
 	/*
 		std::fill(mat[active].begin(), mat[active].end(), 0);
@@ -121,7 +120,6 @@ int main(int argc, char** argv) {
 	#else
 	auto mid = std::chrono::steady_clock::now();
 	#endif
-	std::cout << "sim" << std::endl;
 	/* Simulation loop */
 	for(unsigned int i = 0; i < 100; i++) {
 		//Calc new Values

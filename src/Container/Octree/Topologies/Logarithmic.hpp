@@ -6,16 +6,27 @@
 template <int depth>
 struct Logarithmic {
 	template <class DataType>
-	void operator()(Node<DataType>& root) {
-		root.split();
-		for(int i = 0; i < 2; i++) Logarithmic<depth-1>()(*root.children[i+2]);
+	void operator()(Node<DataType>* root) {
+		/*
+		root->split();
+		for(int i = 0; i < 2; i++) Logarithmic<depth-1>()(root->children[i+2]);
+		*/
+		divide(root, depth);
+	}
+	
+	template<class DataType>
+	void divide(Node<DataType>* root, int d) {
+		if(depth > 0) {
+			root->split();
+			for(int i = 0; i < 2; i++) divide(root->children[i], d-1);
+		}
 	}
 };
 
 template <>
 struct Logarithmic<0> {
 	template <class DataType>
-	void operator()(Node<DataType>& root) {}
+	void operator()(Node<DataType>* root) {}
 };
 
 

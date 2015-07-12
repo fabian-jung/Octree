@@ -90,8 +90,8 @@ public:
 			}
 			
 		}
-		/*
 		world.barrier();
+		/*
 		for(int i = 0; i < world.size(); i++) {
 			if(world.rank() == i) {
 				std::cout << "SendList rank " << i << ":" << std::endl;

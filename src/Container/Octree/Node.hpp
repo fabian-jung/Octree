@@ -61,10 +61,13 @@ public:
 	}
 	
 	void nDelete() {
-		if(leaf) delete value;
-		for(unsigned int i = 0; i < 4; i++) {
-			children[i]->nDelete();
-			delete children[i];
+		if(value != NULL) {
+			delete value;
+		} else {
+			for(unsigned int i = 0; i < 4; i++) {
+				children[i]->nDelete();
+				delete children[i];
+			}
 		}
 	}
 	void split() {

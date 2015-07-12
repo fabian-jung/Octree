@@ -60,8 +60,12 @@ int randomGenerator() {
 }
 
 int main(int argc, char** argv) {
+	#ifdef __INTEL_COMPILER
 	auto start = std::chrono::monotonic_clock::now();
-
+	#else
+	auto start = std::chrono::steady_clock::now();
+	#endif
+	
 	std::srand(1);
 	std::cout << std::fixed <<  std::setprecision(1);
 	mpi::environment env;
@@ -112,8 +116,11 @@ int main(int argc, char** argv) {
 		world.barrier();
 	}
 	*/
-
+	#ifdef __INTEL_COMPILER
 	auto mid = std::chrono::monotonic_clock::now();
+	#else
+	auto mid = std::chrono::steady_clock::now();
+	#endif
 	std::cout << "sim" << std::endl;
 	/* Simulation loop */
 	for(unsigned int i = 0; i < 100; i++) {
@@ -137,7 +144,12 @@ int main(int argc, char** argv) {
 
 	mat[active].gather<Config::Curve>();
 
+	#ifdef __INTEL_COMPILER
 	auto end = std::chrono::monotonic_clock::now();
+	#else
+	auto end = std::chrono::steady_clock::now();
+	#endif
+	
 	auto diff1 = mid - start;
 	auto diff2 = end - mid;
 	auto diff3 = end - start;

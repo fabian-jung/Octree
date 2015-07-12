@@ -71,8 +71,8 @@ public:
 	void split() {
 		if(leaf) {
 			leaf = false;
-			for(Node*& c : children) {
-				c = new Node(this);
+			for(unsigned int i = 0; i < 4; i++) {
+				children[i] = new Node(this);
 			}
 			delete value;
 			increaseSize(3);

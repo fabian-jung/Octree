@@ -94,7 +94,7 @@ public:
 	void gather() {
     	const unsigned int size = dimx_*dimy_;
 		const unsigned int chunkSize = size % world.size() == 0 ? size / world.size() : size / world.size() + 1;
-		const unsigned int memSize = world.rank() == root ? size : chunkSize;
+		const unsigned int memSize = world.rank() == root ? chunkSize*world.size() : chunkSize;
    		
    		std::vector<DataType> buffer(memSize);
 		
@@ -119,7 +119,7 @@ public:
     void scatter() {
     	const unsigned int size = dimx_*dimy_;	
 		const unsigned int chunkSize = size % world.size() == 0 ? size / world.size() : size / world.size() + 1;
-		const unsigned int memSize = world.rank() == root ? size : chunkSize;
+		const unsigned int memSize = world.rank() == root ? chunkSize*world.size() : chunkSize;
 		
    		std::vector<DataType> buffer(memSize);
    		

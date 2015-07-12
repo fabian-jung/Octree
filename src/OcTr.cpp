@@ -20,7 +20,7 @@ namespace mpi = boost::mpi;
 
 #ifndef CONTAINER
 	#warning "No Container specified. Using default (COctree)"
-	#define CONTAINER COctree
+	#define CONTAINER CMatrix
 #endif
 
 #ifndef MODEL
@@ -35,7 +35,7 @@ namespace mpi = boost::mpi;
 
 #ifndef DEPTH
 	#warning "No Depth specified using default (3)"
-	#define DEPTH 3
+	#define DEPTH 11
 #endif
 
 #ifndef TOPOLOGY

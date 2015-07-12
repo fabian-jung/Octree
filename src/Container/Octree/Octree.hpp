@@ -30,7 +30,10 @@ public:
 	{
 		Topology()(rootNode);
 	}
-	
+
+	~Octree() {
+		rootNode.nDelete();
+	}
 	unsigned int getDimx() {
 		return 1 << (rootNode.getDepth() - 1);
 	}

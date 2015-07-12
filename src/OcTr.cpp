@@ -20,7 +20,7 @@ namespace mpi = boost::mpi;
 
 #ifndef CONTAINER
 	#warning "No Container specified. Using default (COctree)"
-	#define CONTAINER CMatrix
+	#define CONTAINER COctree
 #endif
 
 #ifndef MODEL
@@ -35,7 +35,7 @@ namespace mpi = boost::mpi;
 
 #ifndef DEPTH
 	#warning "No Depth specified using default (3)"
-	#define DEPTH 11
+	#define DEPTH 12
 #endif
 
 #ifndef TOPOLOGY
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
 	mpi::environment env;
 	mpi::communicator world;
 	const int root = 0;
-	
+    std::cout << "Init" << std::endl;	
     // Print off a hello world message
     //std::cout << "Hello from rank " << world.rank() << " out of " << world.size() << std::endl;
 	world.barrier();
@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
 		std::fill(mat[active].begin(), mat[active].end(), 0);
 		std::fill(mat[active].begin(), mat[active].end(), 100);
 	*/
-		std::generate(mat[active].begin(), mat[active].end(), randomGenerator);
+	//	std::generate(mat[active].begin(), mat[active].end(), randomGenerator);
 	//	mat[active][Config::MatType::Key(3,4)] = 100;
 	/*	
 		double pos = 0;
@@ -114,7 +114,7 @@ int main(int argc, char** argv) {
 	*/
 
 	auto mid = std::chrono::monotonic_clock::now();
-
+	std::cout << "sim" << std::endl;
 	/* Simulation loop */
 	for(unsigned int i = 0; i < 100; i++) {
 		//Calc new Values

@@ -35,7 +35,7 @@ namespace mpi = boost::mpi;
 
 #ifndef DEPTH
 	#warning "No Depth specified using default (3)"
-	#define DEPTH 13
+	#define DEPTH 3
 #endif
 
 #ifndef TOPOLOGY

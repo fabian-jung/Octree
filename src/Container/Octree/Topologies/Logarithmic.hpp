@@ -16,7 +16,7 @@ struct Logarithmic {
 	
 	template<class DataType>
 	void divide(Node<DataType>* root, int d) {
-		if(depth > 0) {
+		if(d > 0) {
 			root->split();
 			for(int i = 0; i < 2; i++) divide(root->children[i], d-1);
 		}

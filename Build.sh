@@ -4,13 +4,13 @@
 #Build
 make clean
 
-for CONTAINER in CMatrix COctree
+for CONTAINER in COctree #C Matrix
 do
 	for MODEL in HeatEquation GameOfLife
 	do
 		for CURVE in LinearCurve ZCurve HilbertCurve
 		do
-			for DEPTH in 3 4 5 6 7 8 9 10 11 12 13 14
+			for DEPTH in 3 4 5 6 7 8 9 10 11 12 # 13 14
 			do
 				if [ "$CONTAINER" = "COctree" ]; then
 					for TOPOLOGY in Equidistant Logarithmic 
